@@ -20,4 +20,11 @@ public interface LoginService {
      * @return
      */
     ResponseResult login(User user);
+
+    /**
+     * 登出接口
+     *
+     * @return
+     */
+    ResponseResult logout();
 }

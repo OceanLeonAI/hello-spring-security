@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public ResponseResult login(User user) {
-
+        // AuthenticationManager 认证
         Object principal = user.getUserName(); // 用户名
         Object credentials = user.getPassword(); // 密码
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(principal, credentials);
@@ -47,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (Objects.isNull(authenticate)) {
-            throw new RuntimeException("用户名或密码错误");
+            throw new RuntimeException("登录失败");
         }
 
         // 使用userid生成token
@@ -55,10 +56,29 @@ public class LoginServiceImpl implements LoginService {
         String id = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(id);
 
-        // authenticate存入redis
+        // 完整的用户信息存入redis
         redisCache.setCacheObject("login:" + id, loginUser);
 
         // 把token响应给前端
         return new ResponseResult(200, "登陆成功", jwt);
+    }
+
+    /**
+     * 登出接口
+     * 获取SecurityContextHolder中的认证信息，
+     * 删除redis中对应的数据即可
+     *
+     * @return
+     */
+    @Override
+    public ResponseResult logout() {
+
+        // 获取 SecurityContextHolder 用户id
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        String cacheKey = "login:" + loginUser.getUser().getId();
+        redisCache.deleteObject(cacheKey);
+
+        return new ResponseResult(200, "退出成功");
     }
 }

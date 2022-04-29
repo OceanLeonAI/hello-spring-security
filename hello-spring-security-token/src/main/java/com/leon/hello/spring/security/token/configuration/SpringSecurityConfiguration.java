@@ -1,5 +1,7 @@
 package com.leon.hello.spring.security.token.configuration;
 
+import com.leon.hello.spring.security.token.filter.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @PROJECT_NAME: hello-spring-security
@@ -15,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @AUTHOR: OceanLeonAI
  * @CREATED_DATE: 2022/4/26 23:08
  * @Version 1.0
- * @DESCRIPTION:
+ * @DESCRIPTION: SpringSecurity 配置类
  **/
 @Configuration
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -29,6 +32,12 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    /**
+     * 注入自定义拦截器
+     */
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     /**
      * security 配置
@@ -49,6 +58,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/login").anonymous()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
+
+        // 配置自定义拦截器
+        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
