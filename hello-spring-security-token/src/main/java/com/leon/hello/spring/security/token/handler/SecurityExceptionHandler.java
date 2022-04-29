@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @PROJECT_NAME: hello-spring-security
@@ -31,10 +32,11 @@ public class SecurityExceptionHandler {
      * @param e
      * @return
      */
+    @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseResult responseResult(Exception e) {
         logger.error("捕获到异常", e);
-        return new ResponseResult(500, "发生异常，请联系管理员！");
+        return new ResponseResult(500, e.getMessage());
     }
 
 }

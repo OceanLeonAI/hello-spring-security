@@ -54,10 +54,19 @@ public class LoginServiceImpl implements LoginService {
         // 使用userid生成token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String id = loginUser.getUser().getId().toString();
+
+        String cacheKey = "login:" + id;
+
+        // 判断是否已经登录过了
+        LoginUser loginUserExist = redisCache.getCacheObject(cacheKey);
+        if (!Objects.isNull(loginUserExist)) {
+            throw new RuntimeException("用户已登录");
+        }
+
         String jwt = JwtUtil.createJWT(id);
 
         // 完整的用户信息存入redis
-        redisCache.setCacheObject("login:" + id, loginUser);
+        redisCache.setCacheObject(cacheKey, loginUser);
 
         // 把token响应给前端
         return new ResponseResult(200, "登陆成功", jwt);
