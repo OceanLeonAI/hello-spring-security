@@ -26,15 +26,11 @@ public class LoginController {
 
     /**
      * 登录接口
-     * TODO: 已登录状态再次登录
      *
      * @return
      */
     @PostMapping("/login")
     public ResponseResult login(@RequestBody User user) {
-//        if(true){
-//            throw new RuntimeException("登录时抛出异常");
-//        }
         return loginService.login(user);
     }
 
@@ -47,6 +43,17 @@ public class LoginController {
     @PostMapping("/logout")
     public ResponseResult logout() {
         return loginService.logout();
+    }
+
+    /**
+     * 登出接口
+     *
+     * @return
+     */
+    @PostMapping("/permitAll")
+    public ResponseResult permitAll() {
+
+        return new ResponseResult(200, "function permitAll is called...");
     }
 
 }

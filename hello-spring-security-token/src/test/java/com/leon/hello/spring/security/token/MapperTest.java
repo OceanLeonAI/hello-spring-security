@@ -1,6 +1,7 @@
 package com.leon.hello.spring.security.token;
 
 import com.leon.hello.spring.security.token.domain.User;
+import com.leon.hello.spring.security.token.mapper.MenuMapper;
 import com.leon.hello.spring.security.token.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,25 @@ public class MapperTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
     /**
      * 测试用户信息Mapper
      */
     @Test
-    public void testUserMapper() {
+    public void userMapperTest() {
         List<User> users = userMapper.selectList(null);
         System.out.println(users);
+    }
+
+    /**
+     * 测试用户信息Mapper
+     */
+    @Test
+    public void menuMapperTest() {
+        List<String> perms = menuMapper.selectPermsByUserId(1L);
+        System.out.println(perms);
     }
 
 }

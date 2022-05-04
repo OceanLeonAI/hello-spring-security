@@ -2,7 +2,9 @@ package com.leon.hello.spring.security.token.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.leon.hello.spring.security.token.domain.LoginUser;
+import com.leon.hello.spring.security.token.domain.Menu;
 import com.leon.hello.spring.security.token.domain.User;
+import com.leon.hello.spring.security.token.mapper.MenuMapper;
 import com.leon.hello.spring.security.token.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +30,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -39,9 +46,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new RuntimeException("用户名或者密码错误");
         }
 
-        // 根据用户信息查询其对应权限信息
+        // TODO: 根据用户信息查询其对应权限信息
+        // List<String> permissions = Arrays.asList("test", "admin");
+        List<String> permissions = menuMapper.selectPermsByUserId(user.getId());
+
 
         // 封装返回数据类型
-        return new LoginUser(user);
+        return new LoginUser(user, permissions);
     }
 }

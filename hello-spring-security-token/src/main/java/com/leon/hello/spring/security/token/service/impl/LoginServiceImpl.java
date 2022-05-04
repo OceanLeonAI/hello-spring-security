@@ -69,7 +69,7 @@ public class LoginServiceImpl implements LoginService {
         redisCache.setCacheObject(cacheKey, loginUser);
 
         // 把token响应给前端
-        return new ResponseResult(200, "登陆成功", jwt);
+        return new ResponseResult(200, "登录成功", jwt);
     }
 
     /**
@@ -84,6 +84,10 @@ public class LoginServiceImpl implements LoginService {
 
         // 获取 SecurityContextHolder 用户id
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        /**
+         * 此处无需校验获取的用户是否为空
+         * 因为如果为空会被前置的拦截器处理掉，不会进入该环节
+         */
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String cacheKey = "login:" + loginUser.getUser().getId();
         redisCache.deleteObject(cacheKey);
