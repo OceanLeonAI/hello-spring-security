@@ -1,6 +1,8 @@
 package com.leon.hello.spring.security.token.controller;
 
+import com.leon.hello.spring.security.token.configuration.SpringSecurityConfiguration;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,11 @@ public class HelloController {
     public String hello() {
         return "hello";
     }
+
+    /**
+     * TODO: 增加 spring security 权限相关模拟方法
+     * @see AbstractRequestMatcherRegistry#antMatchers(java.lang.String...)
+     * {@link SpringSecurityConfiguration#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)}
+     */
 
 }
