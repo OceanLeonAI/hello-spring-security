@@ -1,6 +1,8 @@
 package com.leon.hello.spring.security.token.configuration;
 
 import com.leon.hello.spring.security.token.filter.JwtAuthenticationTokenFilter;
+import com.leon.hello.spring.security.token.handler.AccessDeniedHandlerImpl;
+import com.leon.hello.spring.security.token.handler.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +44,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     /**
+     * 认证异常处理
+     */
+    @Autowired
+    private AuthenticationEntryPointImpl authenticationEntryPoint;
+
+    /**
+     * 授权异常处理
+     */
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandler;
+
+    /**
      * security 配置
      *
      * @param http
@@ -65,7 +79,10 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 配置自定义拦截器
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // 配置异常处理 TODO
+        // 配置异常处理
+        http.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint) // 认证异常
+                .accessDeniedHandler(accessDeniedHandler); // 授权异常
     }
 
     /**

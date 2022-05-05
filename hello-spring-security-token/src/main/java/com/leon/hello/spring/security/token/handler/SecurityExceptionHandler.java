@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @AUTHOR: OceanLeonAI
  * @CREATED_DATE: 2022/4/29 22:16
  * @Version 1.0
- * @DESCRIPTION: 自定义异常处理
- * FIXME: 如何捕获security抛出的异常
+ * @DESCRIPTION: 自定义异常处理，只捕获controller里的异常
+ * 无法捕获 filter里的异常
+ * SpringSecurity filter的异常需要单独处理，分为认证异常和授权异常
  **/
 @Slf4j
-@ControllerAdvice
+//@ControllerAdvice // FIXME: 考虑这个全局异常捕获对 security 异常处理的影响
 public class SecurityExceptionHandler {
 
     /**

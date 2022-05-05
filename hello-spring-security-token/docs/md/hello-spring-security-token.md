@@ -84,3 +84,40 @@
 ### jwt
 
 #### 是什么
+
+### 拦截器 过滤器
+
+#### [拦截器（Interceptor）和过滤器（Filter）的执行顺序和区别](https://blog.csdn.net/zxd1435513775/article/details/80556034)
+
+![](hello-spring-security-token.assets/拦截器VS过滤器.png)
+
+#### [spring 拦截器（Interceptor）和过滤器（Filter）的执行顺序和区别](https://blog.csdn.net/qianhuan_/article/details/107406100)
+
+![image-20220505223552815](hello-spring-security-token.assets/image-20220505223552815.png)
+
+区别：
+
+①拦截器是基于java的反射机制的，而过滤器是基于函数回调。
+
+②拦截器不依赖与servlet容器，过滤器依赖与servlet容器。
+
+③拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用。
+
+④拦截器可以访问action上下文、值栈里的对象，而过滤器不能访问。
+
+⑤在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次
+
+#### [面向切面（Spring Aop）、拦截器、过滤器的区别](https://www.pianshen.com/article/5332798685/)
+
+Filter过滤器：拦截web访问url地址。
+Interceptor拦截器：拦截以 .action结尾的url，拦截Action的访问。
+Spring AOP拦截器：只能拦截Spring管理Bean的访问（业务层Service）
+
+Filter与Interceptor联系与区别
+1. 拦截器是基于java的反射机制，使用代理模式，而过滤器是基于函数回调。
+2. 拦截器不依赖servlet容器，过滤器依赖于servlet容器。
+3. 拦截器只能对action起作用，而过滤器可以对几乎所有的请求起作用（可以保护资源）。
+4. 拦截器可以访问action上下文，堆栈里面的对象，而过滤器不可以。
+5. 执行顺序：过滤前-拦截前-Action处理-拦截后-过滤后。
+
+![image-20220505224155949](hello-spring-security-token.assets/image-20220505224155949.png)

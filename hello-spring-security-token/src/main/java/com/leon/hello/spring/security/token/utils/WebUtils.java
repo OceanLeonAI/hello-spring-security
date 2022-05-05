@@ -9,7 +9,7 @@ import java.io.IOException;
  * @AUTHOR: OceanLeonAI
  * @CREATED_DATE: 2022/4/24 21:31
  * @Version 1.0
- * @DESCRIPTION:
+ * @DESCRIPTION: 工具类用于封装异常返回数据
  **/
 public class WebUtils {
 
