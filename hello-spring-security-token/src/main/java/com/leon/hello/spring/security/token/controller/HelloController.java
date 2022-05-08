@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @PreAuthorize("hasAnyAuthority('test')")
+    // @PreAuthorize("hasAnyAuthority('test')")
+    @PreAuthorize("@customisedSecurityExpressionRoot.hasAuthority('test')") // 注意引用自定义bean方法
+    // @PreAuthorize("hasAnyAuthority('admin','test','system:dept:list')")
+    // @PreAuthorize("hasRole('system:dept:list')")
+    // @PreAuthorize("hasAnyRole('admin','system:dept:list')")
     @RequestMapping("/hello")
     public String hello() {
         return "hello";
