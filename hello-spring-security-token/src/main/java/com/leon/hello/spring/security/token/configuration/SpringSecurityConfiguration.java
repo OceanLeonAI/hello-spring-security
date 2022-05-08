@@ -65,7 +65,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 //关闭csrf
-                .csrf().disable()
+                .csrf().disable() // Cross-site request forgery 跨站请求伪造
                 //不通过Session获取SecurityContext
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -73,6 +73,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous() // 未认证可以访问，认证后不能访问
                 .antMatchers("/user/permitAll").permitAll() // 认证和未认证都可以访问
+                // .antMatchers("/testCors").hasAuthority("system:dept:list222") // 基于配置的权限策略
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated(); // 认证以后可以访问
 
