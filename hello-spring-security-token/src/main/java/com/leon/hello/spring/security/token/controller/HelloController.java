@@ -1,6 +1,7 @@
 package com.leon.hello.spring.security.token.controller;
 
 import com.leon.hello.spring.security.token.configuration.SpringSecurityConfiguration;
+import com.leon.hello.spring.security.token.domain.ResponseResult;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,14 @@ public class HelloController {
 
     /**
      * TODO: 增加 spring security 权限相关模拟方法
+     *
      * @see AbstractRequestMatcherRegistry#antMatchers(java.lang.String...)
      * {@link SpringSecurityConfiguration#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)}
      */
+
+    @RequestMapping("/testCors")
+    public ResponseResult testCors() {
+        return new ResponseResult(200, "testCors");
+    }
 
 }

@@ -83,6 +83,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint) // 认证异常
                 .accessDeniedHandler(accessDeniedHandler); // 授权异常
+
+        // 允许跨域
+        http.cors();
     }
 
     /**
